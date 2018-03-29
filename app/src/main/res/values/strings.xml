@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">TempV1</string>
+
+
+    <!-- Registration strings -->
+    <string name="main_name">famous</string>
+    <string name="name">Name</string>
+    <string name="email">Email</string>
+    <string name="age">Age</string>
+    <string name="phone">Phone Number</string>
+    <string name="Save">Save</string>
+    <string name="View">View Saved Data</string>
+</resources>
