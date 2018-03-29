@@ -76,9 +76,6 @@ public class MainActivity extends AppCompatActivity {
             age.setText(null);
             email.setText(null);
             phone.setText(null);
-        }else{
-            Snackbar snackbar = Snackbar.make(findViewById(R.id.root_coordinatorLayout), "Failed", Snackbar.LENGTH_SHORT);
-            snackbar.show();
         }
     }
 
