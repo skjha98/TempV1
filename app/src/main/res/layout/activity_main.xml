@@ -90,7 +90,7 @@
             android:id="@+id/view_textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="60dp"
             android:gravity="center"
             android:text="@string/View"
             android:textColor="@color/inactive_color"
