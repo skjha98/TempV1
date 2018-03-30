@@ -43,40 +43,57 @@ public class MainActivity extends AppCompatActivity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                User user = new User(
-                        name.getText().toString(),
-                        age.getText().toString(),
-                        email.getText().toString(),
-                        phone.getText().toString()
-                );
-                ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-                NetworkInfo networkInfo = cm.getActiveNetworkInfo();
-                if (networkInfo != null && networkInfo.isConnectedOrConnecting()) {
-                    databaseReference.push().setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                resetEditTexts(task.isSuccessful());
-                            }
-                        }
-                    });
-                } else {
-                    Toast.makeText(MainActivity.this, "Turn ON Internet Connection", Toast.LENGTH_SHORT).show();
-                }
+                pushUser();
             }
         });
 
     }
 
-    void resetEditTexts(boolean task) {
-        if (task) {
-            Snackbar snackbar = Snackbar.make(findViewById(R.id.root_coordinatorLayout), "Data Successfully Added", Snackbar.LENGTH_SHORT);
+    @NonNull
+    private Boolean checkConnection(){
+
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+    }
+
+    @NonNull
+    private User createUser(){
+
+        if(name.getText().toString().isEmpty() && age.getText().toString().isEmpty() && email.getText().toString().isEmpty() && phone.getText().toString().isEmpty()) {
+            Snackbar snackbar = Snackbar.make(findViewById(R.id.root_coordinatorLayout), "Please fill all above details", Snackbar.LENGTH_SHORT);
             snackbar.show();
-            name.setText(null);
-            age.setText(null);
-            email.setText(null);
-            phone.setText(null);
         }
+
+        return new User(
+                name.getText().toString().trim(),
+                age.getText().toString().trim(),
+                email.getText().toString().trim(),
+                phone.getText().toString().trim()
+        );
+    }
+
+    private void pushUser(){
+
+        if (checkConnection()) {
+            databaseReference.push().setValue(createUser()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()) {
+                        Snackbar snackbar = Snackbar.make(findViewById(R.id.root_coordinatorLayout), "Data Successfully Added", Snackbar.LENGTH_SHORT);
+                        snackbar.show();
+                        name.setText(null);
+                        age.setText(null);
+                        email.setText(null);
+                        phone.setText(null);
+                    }
+                }
+            });
+        } else {
+            Snackbar snackbar = Snackbar.make(findViewById(R.id.root_coordinatorLayout), "Turn ON Wi-Fi / Mobile Data", Snackbar.LENGTH_SHORT);
+            snackbar.show();
+        }
+
     }
 
 }
